@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ post.title }}
+{% endblock %}
+
+{% block content %}
+<div class="recipe-detail">
+    <div class="recipe-header mb-4">
+        <h1>{{ post.title }}</h1>
+        <div class="recipe-actions mt-3">
+            <a href="{{ url_for('edit_recipe', id=post.id) }}" class="btn btn-primary me-2">
+                <i class="fas fa-edit me-1"></i>Редактировать
+            </a>
+            <form method="POST" action="{{ url_for('delete_recipe', id=post.id) }}" class="d-inline">
+                <button type="submit" class="btn btn-danger"
+                        onclick="return confirm('Вы уверены, что хотите удалить этот рецепт?')">
+                    <i class="fas fa-trash-alt me-1"></i>Удалить
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="recipe-images mb-4">
+        <h3>Фотографии блюда</h3>
+        <div class="row g-3">
+            {% for image in post.images %}
+            <div class="col-md-4">
+                <div class="image-thumbnail rounded overflow-hidden">
+                    <img src="{{ image.url }}" alt="Изображение блюда"
+                         class="img-fluid w-100"
+                         style="height: 200px; object-fit: cover;">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-light">
+                    <h3 class="mb-0">Ингредиенты</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ post.ingredients | replace('\n', '<br>') | safe }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-light">
+                    <h3 class="mb-0">Пошаговый рецепт</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ post.recipe | replace('\n', '<br>') | safe }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

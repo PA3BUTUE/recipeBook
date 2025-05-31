@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Все рецепты
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Все рецепты</h1>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for post in posts %}
+        <div class="col">
+            <div class="card h-100 recipe-card shadow-sm border-0">
+                <a href="{{ url_for('show_recipe', id=post.id) }}" class="text-decoration-none">
+                    {% if post.images %}
+                    <img src="{{ post.images[0].url }}"
+                         class="card-img-top recipe-image"
+                         alt="{{ post.title }}"
+                         style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top recipe-image-placeholder d-flex align-items-center justify-content-center bg-light"
+                         style="height: 200px;">
+                        <i class="fas fa-camera fa-3x text-muted"></i>
+                    </div>
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title recipe-title mb-1">{{ post.title }}</h5>
+                        <div class="recipe-separator my-2"></div>
+                        <p class="card-text recipe-description text-muted small">
+                            {{ post.description|truncate(100) }}
+                        </p>
+                    </div>
+
+                    <div class="card-footer bg-white border-0 pt-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="recipe-link text-primary small">
+                                Читать рецепт <i class="fas fa-chevron-right ms-1"></i>
+                            </span>
+                            {% if post.images|length > 1 %}
+                            <span class="badge bg-light text-muted">
+                                <i class="fas fa-images me-1"></i>{{ post.images|length }}
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
